@@ -1,20 +1,21 @@
-import { useContext, useEffect } from 'react'
+import { useContext } from 'react'
 import { AgoraLiveStreamingContext } from '../../context/InteractiveLiveStreamingContext'
 
 import StreamBox from '../StreamBox'
 
 import { RemoteStreamInterface } from '../../hooks/AgoraLiveStreamingHook/types'
 
+import {
+  ContainerLayout1,
+  StreamBoxContainerLayout1,
+  ActionButtonsContainerLayout1,
+} from './styles'
+
 const AudienceRoom = () => {
 
   const {
-    client,
     localStream,
-    audio,
-    video,
     remoteStreams,
-    setAudio,
-    setVideo
   } = useContext(AgoraLiveStreamingContext)
 
   //create boxes to run remote streams
@@ -35,11 +36,19 @@ const AudienceRoom = () => {
   }
 
   return (
-    <>
-      {
-        remoteStreams?.map((remoteStream : RemoteStreamInterface) => handleRemoteStream(remoteStream))
-      }
-    </>
+    <ContainerLayout1>
+      <StreamBoxContainerLayout1>
+        {
+          remoteStreams?.map((remoteStream : RemoteStreamInterface) => handleRemoteStream(remoteStream))
+        }
+      </StreamBoxContainerLayout1>
+      <ActionButtonsContainerLayout1>
+        <button onClick={() => alert('Reaction 1')} >Reaction 1</button>
+        <button onClick={() => alert('Reaction 2')} >Reaction 2</button>
+        <button onClick={() => alert('Reaction 3')} >Reaction 3</button>
+        <button onClick={() => alert('Reaction 4')} >Reaction 4</button>
+      </ActionButtonsContainerLayout1>
+    </ContainerLayout1>
   )
 }
 

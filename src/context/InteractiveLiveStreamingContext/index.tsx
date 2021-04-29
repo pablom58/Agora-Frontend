@@ -12,30 +12,39 @@ export const AgoraLiveStreamingContext: Context<Partial<LiveStreamingContext>> =
 
 export const AgoraLiveStreamingProvider: AgoraLiveStreamingProviderInterface = (props: ArgsType) => {
   const {
-    client,
     localStream,
+    screenStream,
     audio,
     video,
     remoteStreams,
     setAudio,
-    setVideo
+    setVideo,
+    toggleAudio,
+    toggleVideo,
+    shareScreen,
+    stopShareScreen
   } = useAgoraLiveStreaming({
     appId: props.appId,
     channel: props.channel,
     clientToken: props.clientToken,
-    role: props.role
+    role: props.role,
+    user: props.user
   })
 
   return (
     <AgoraLiveStreamingContext.Provider
       value={{
-        client,
         localStream,
+        screenStream,
         audio,
         video,
         remoteStreams,
         setAudio,
-        setVideo
+        setVideo,
+        toggleAudio,
+        toggleVideo,
+        shareScreen,
+        stopShareScreen
       }}
     >
       { props.children }

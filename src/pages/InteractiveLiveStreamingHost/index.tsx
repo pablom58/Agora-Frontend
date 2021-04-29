@@ -7,8 +7,11 @@ const InteractiveLiveStreamingHost = () => {
     <AgoraLiveStreamingProvider
       appId='b1a1950126384c31b267e2380084d313'
       channel='pmvs-channel'
-      clientToken='006b1a1950126384c31b267e2380084d313IADIg6mrY5CD1xuZBL4isSgVTJQ27V4mMCTLmNLEdzjx+9WwQKsAAAAAEACkGjsKI6GJYAEAAQAjoYlg'
+      clientToken='006b1a1950126384c31b267e2380084d313IACfElZiZu7PgW/nRDjY0RoN7d+IXVYUnr1sNcjj8FVohtWwQKsAAAAAEACkGjsKpe+LYAEAAQCl74tg'
       role={RoleTypes.HOST}
+      user={{
+        name: 'Pablo Villamizar'
+      }}
     >
       <SpeakersRoom />
     </AgoraLiveStreamingProvider>

@@ -1,5 +1,11 @@
 import { useEffect , useState } from 'react'
 
+import {
+    StreamBoxContainer,
+    StyledStreamBox,
+    UserDetails
+} from './styles'
+
 const StreamBox = (props : any) => {
   const [name,setName] = useState<string>('')
 
@@ -16,8 +22,10 @@ const StreamBox = (props : any) => {
   },[props.id])
 
   return (
-      <div id={`${props.id}_container`} style={{ width: '400px', height: '300px' }}>
-      </div>
+      <StreamBoxContainer>
+          <StyledStreamBox id={`${props.id}_container`} />
+          <UserDetails>{ name }</UserDetails>
+      </StreamBoxContainer>
   )
 }
 

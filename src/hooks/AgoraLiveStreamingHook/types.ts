@@ -6,22 +6,32 @@ export enum RoleTypes{
   AUDIENCE = 'audience'
 }
 
+export type UserData = {
+  name: string
+  userId?: string
+}
+
 export type ArgsType = {
   appId: string
   role: RoleTypes
   clientToken: string
   channel: string
+  user: UserData
   children?: JSX.Element
 }
 
 export type LiveStreamingContext = {
-  client: AgoraRTC.Client
   localStream: LocalStream
+  screenStream: LocalStream
   audio: MediaDevicesState
   video: MediaDevicesState
   remoteStreams: RemoteStreamInterface[]
   setVideo: Dispatch<SetStateAction<MediaDevicesState>>
   setAudio: Dispatch<SetStateAction<MediaDevicesState>>
+  toggleAudio: ToggleMediaDeviceInterface
+  toggleVideo: ToggleMediaDeviceInterface
+  shareScreen: ShareScreenInterface
+  stopShareScreen: StopShareScreenInterface
 }
 
 export interface UseAgoraLiveStreaming {
@@ -53,9 +63,22 @@ export interface RemoteStreamsClousureInterface {
   removeRemoteStream: (id: string | number) => void
   value: () => RemoteStreamInterface[]
   empty: () => void
+  find: (id: number | string) => boolean
 }
 
 export interface RemoteStreamInterface {
   id: number | string,
   stream: AgoraRTC.Stream
+}
+
+export interface ToggleMediaDeviceInterface {
+  () : void
+}
+
+export interface ShareScreenInterface {
+  () : void
+}
+
+export interface StopShareScreenInterface {
+  () : void
 }
