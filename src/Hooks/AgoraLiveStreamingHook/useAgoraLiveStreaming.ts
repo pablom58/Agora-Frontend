@@ -21,8 +21,6 @@ import {
   StopShareScreenInterface
 } from './types'
 
-import { v4 } from 'uuid'
-
 const CLIENT_CONFIG : AgoraRTC.ClientConfig = {
   mode: 'live',
   codec: 'vp8'
@@ -75,23 +73,13 @@ const useAgoraLiveStreaming = (Args: ArgsType) => {
   const client : AgoraRTC.Client = useMemo(() => AgoraRTC.createClient(CLIENT_CONFIG),[])
 
   //user id built from the user information, this will be use as id of the client stream
-  const userId : string = useMemo(() => btoa(JSON.stringify({
-    ...Args.user,
-    userId: v4()
-  })),[Args.user])
+  const userId : number = useMemo(() => Args.user.id || 0,[Args.user.id])
 
   //this is the screen client that handles the share screen streaming
-  const screen : AgoraRTC.Client = useMemo(() => AgoraRTC.createClient({
-    mode: 'rtc',
-    codec: 'h264'
-  }),[])
+  const screen : AgoraRTC.Client = useMemo(() => AgoraRTC.createClient(CLIENT_CONFIG),[])
 
   //user screen id built from the user information, this will be use as id of the client stream
-  const screenId : string = useMemo(() => btoa(JSON.stringify({
-    ...Args.user,
-    name: `${Args.user.name} Screen Shared`,
-    userId: v4()
-  })),[Args.user])
+  const screenId : number = useMemo(() => Args.user.id || 0, [Args.user.id])
 
   //local stream of the user
   const [ localStream , setLocalStream ] = useState<LocalStream>({
@@ -256,7 +244,8 @@ const useAgoraLiveStreaming = (Args: ArgsType) => {
     Args.clientToken,
     Args.role,
     handleError,
-    userId
+    userId,
+    Args.user.id
   ])
 
   //dispatched when a new stream is detected

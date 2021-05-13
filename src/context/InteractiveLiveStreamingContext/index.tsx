@@ -1,10 +1,10 @@
 import { createContext, Context } from 'react'
-import useAgoraLiveStreaming from '../../hooks/AgoraLiveStreamingHook/useAgoraLiveStreaming'
+import useAgoraLiveStreaming from '../../Hooks/AgoraLiveStreamingHook/useAgoraLiveStreaming'
 
 import {
   LiveStreamingContext,
   ArgsType
-} from '../../hooks/AgoraLiveStreamingHook/types'
+} from '../../Hooks/AgoraLiveStreamingHook/types'
 
 import { AgoraLiveStreamingProvider as AgoraLiveStreamingProviderInterface } from './types'
 

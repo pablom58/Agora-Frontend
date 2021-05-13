@@ -3,7 +3,7 @@ import { AgoraLiveStreamingContext } from '../../context/InteractiveLiveStreamin
 
 import StreamBox from '../StreamBox'
 
-import { RemoteStreamInterface } from '../../hooks/AgoraLiveStreamingHook/types'
+import { RemoteStreamInterface } from '../../Hooks/AgoraLiveStreamingHook/types'
 
 import {
   ContainerLayout1,

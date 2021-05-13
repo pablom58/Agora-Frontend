@@ -1,20 +1,72 @@
+import { useState, useEffect } from 'react'
 import { AgoraLiveStreamingProvider } from '../../context/InteractiveLiveStreamingContext'
-import { RoleTypes } from '../../hooks/AgoraLiveStreamingHook/types'
+import { RoleTypes } from '../../Hooks/AgoraLiveStreamingHook/types'
 import SpeakersRoom from '../../components/SpeakersRoom'
+import { ENTRYPOINT } from '../../config'
+
+type Data = {
+  token: string
+  uid: number
+  channel: string
+  appId: string
+}
 
 const InteractiveLiveStreamingHost = () => {
+  const [laoding, setLoading] = useState(false)
+
+  const [data, setData] = useState<Data>({
+    token: '',
+    uid: 0,
+    channel: '',
+    appId: '',
+  })
+
+  useEffect(() => {
+    setLoading(true)
+    fetch(`${ENTRYPOINT}/agora/channel/create`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        role: RoleTypes.HOST,
+        channel: 'pmvs-channel'
+      })
+    })
+      .then(response => response.json())
+      .then(response => {
+        if(response.status === 200){
+          const { token, uid, channel, appId } = response.data
+          setData({ token, uid, channel, appId })
+          setLoading(false)
+        }
+      })
+      .catch(error => console.error(error))
+  },[])
+
+  if(laoding) return <p>Loading...</p>
+
   return (
-    <AgoraLiveStreamingProvider
-      appId='b1a1950126384c31b267e2380084d313'
-      channel='pmvs-channel'
-      clientToken='006b1a1950126384c31b267e2380084d313IACfElZiZu7PgW/nRDjY0RoN7d+IXVYUnr1sNcjj8FVohtWwQKsAAAAAEACkGjsKpe+LYAEAAQCl74tg'
-      role={RoleTypes.HOST}
-      user={{
-        name: 'Pablo Villamizar'
-      }}
-    >
-      <SpeakersRoom />
-    </AgoraLiveStreamingProvider>
+    <>
+      {
+        data.token && data.token !== ''
+          ? (
+            <AgoraLiveStreamingProvider
+              appId={data.appId}
+              channel={data.channel}
+              clientToken={data.token}
+              role={RoleTypes.HOST}
+              user={{
+                name: 'Pablo Villamizar',
+                id: data.uid
+              }}
+            >
+              <SpeakersRoom />
+            </AgoraLiveStreamingProvider>
+          )
+          : <></>
+      }
+    </>
   )
 }
 

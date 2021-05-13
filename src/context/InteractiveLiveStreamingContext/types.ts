@@ -1,4 +1,4 @@
-import { ArgsType } from '../../hooks/AgoraLiveStreamingHook/types'
+import { ArgsType } from '../../Hooks/AgoraLiveStreamingHook/types'
 
 export interface AgoraLiveStreamingProvider {
   (props: ArgsType) : JSX.Element

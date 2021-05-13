@@ -8,7 +8,7 @@ export enum RoleTypes{
 
 export type UserData = {
   name: string
-  userId?: string
+  id?: number
 }
 
 export type ArgsType = {
