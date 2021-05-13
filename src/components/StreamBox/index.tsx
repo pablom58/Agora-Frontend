@@ -18,8 +18,8 @@ const StreamBox = (props : any) => {
 
   //put the user name in local state to show it
   useEffect(() => {
-      let data = JSON.parse(atob(`${props.id}`))
-      setName(data.name)
+    //   let data = JSON.parse(atob(`${props.id}`))
+      setName(v4())
   },[props.id])
 
   return (

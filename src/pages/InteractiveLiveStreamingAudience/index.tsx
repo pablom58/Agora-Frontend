@@ -3,12 +3,15 @@ import { AgoraLiveStreamingProvider } from '../../context/InteractiveLiveStreami
 import { RoleTypes } from '../../Hooks/AgoraLiveStreamingHook/types'
 import AudienceRoom from '../../components/AudienceRoom'
 import { ENTRYPOINT } from '../../config'
+import { SocketProvider } from '../../context/SocketContext'
 
 type Data = {
   token: string
   uid: number
+  scid: number
   channel: string
   appId: string
+  screenToken: string
 }
 
 const InteractiveLiveStreamingAudience = () => {
@@ -18,8 +21,10 @@ const InteractiveLiveStreamingAudience = () => {
   const [data, setData] = useState<Data>({
     token: '',
     uid: 0,
+    scid: 0,
     channel: '',
     appId: '',
+    screenToken: '',
   })
 
   useEffect(() => {
@@ -30,16 +35,16 @@ const InteractiveLiveStreamingAudience = () => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        role: RoleTypes.HOST
+        role: RoleTypes.AUDIENCE,
+        channel: 'pmvs-channel'
       })
     })
       .then(response => response.json())
       .then(response => {
         if(response.status === 200){
-          const { token, uid, channel, appId } = response.data
-          setData({ token, uid, channel, appId })
+          const { token, uid, channel, appId, screenToken, scid } = response.data
+          setData({ token, uid, channel, appId, screenToken, scid })
           setLoading(false)
-          console.log('HERE', {token, uid, channel, appId})
         }
       })
       .catch(error => console.error(error))
@@ -56,13 +61,20 @@ const InteractiveLiveStreamingAudience = () => {
               appId={data.appId}
               channel={data.channel}
               clientToken={data.token}
-              role={RoleTypes.HOST}
+              screenToken={data.screenToken}
+              role={RoleTypes.AUDIENCE}
               user={{
                 name: 'Pablo Villamizar',
                 id: data.uid
               }}
+              screen={{
+                name: 'Pablo Villamizar Screen Shared',
+                id: data.scid
+              }}
             >
-              <AudienceRoom />
+              <SocketProvider>
+                <AudienceRoom />
+              </SocketProvider>
             </AgoraLiveStreamingProvider>
           )
           : <></>

@@ -15,8 +15,10 @@ export type ArgsType = {
   appId: string
   role: RoleTypes
   clientToken: string
+  screenToken: string
   channel: string
   user: UserData
+  screen: UserData
   children?: JSX.Element
 }
 
@@ -26,12 +28,15 @@ export type LiveStreamingContext = {
   audio: MediaDevicesState
   video: MediaDevicesState
   remoteStreams: RemoteStreamInterface[]
+  channel: string
+  role: RoleTypes
   setVideo: Dispatch<SetStateAction<MediaDevicesState>>
   setAudio: Dispatch<SetStateAction<MediaDevicesState>>
   toggleAudio: ToggleMediaDeviceInterface
   toggleVideo: ToggleMediaDeviceInterface
   shareScreen: ShareScreenInterface
   stopShareScreen: StopShareScreenInterface
+  leaveChannel: LeaveChannelInterface
 }
 
 export interface UseAgoraLiveStreaming {
@@ -80,5 +85,9 @@ export interface ShareScreenInterface {
 }
 
 export interface StopShareScreenInterface {
+  () : void
+}
+
+export interface LeaveChannelInterface {
   () : void
 }

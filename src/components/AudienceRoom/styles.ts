@@ -8,6 +8,7 @@ export const ContainerLayout1 = styled.div`
   justify-content: center;
   align-items: flex-start;
   flex-wrap: wrap;
+  position: relative;
 `
 
 export const StreamBoxContainerLayout1 = styled.div`
@@ -20,6 +21,23 @@ export const StreamBoxContainerLayout1 = styled.div`
   align-items: center;
   flex-wrap: wrap;
   position: relative;
+`
+
+export const ChannelNameContainer = styled.div`
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 200px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #fff;
+`
+
+export const ChannelName = styled.p`
+  font-size: 20px;
+  font-weight: bold;
 `
 
 export const ActionButtonsContainerLayout1 = styled.div`

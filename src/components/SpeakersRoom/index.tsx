@@ -1,5 +1,6 @@
 import { useContext, useEffect } from 'react'
 import { AgoraLiveStreamingContext } from '../../context/InteractiveLiveStreamingContext'
+import { SocketContext } from '../../context/SocketContext'
 
 import StreamBox from '../../components/StreamBox'
 
@@ -7,8 +8,12 @@ import {
   ContainerLayout1,
   StreamBoxContainerLayout1,
   ActionButtonsContainerLayout1,
-  TotalSpeakers
+  TotalSpeakers,
+  ChannelNameContainer,
+  ChannelName
 } from './styles'
+
+import { Events } from '../../Hooks/useSocket/types'
 
 const SpeakersRoom = () => {
 
@@ -18,11 +23,15 @@ const SpeakersRoom = () => {
     video,
     audio,
     remoteStreams,
+    channel,
     toggleAudio,
     toggleVideo,
     shareScreen,
-    stopShareScreen
+    stopShareScreen,
+    leaveChannel
   } = useContext(AgoraLiveStreamingContext)
+
+  const { emitEvent } = useContext(SocketContext)
 
   //start local stream
   useEffect(() => {
@@ -45,6 +54,9 @@ const SpeakersRoom = () => {
   return (
     <ContainerLayout1>
       <StreamBoxContainerLayout1>
+        <ChannelNameContainer>
+          <ChannelName>{ channel }</ChannelName>
+        </ChannelNameContainer>
         <TotalSpeakers>{ localStream && localStream.stream && remoteStreams ? remoteStreams.length + 1 : remoteStreams?.length }</TotalSpeakers>
         {
           localStream
@@ -78,6 +90,8 @@ const SpeakersRoom = () => {
         <button onClick={toggleVideo} >video</button>
         <button onClick={shareScreen} >share screen</button>
         <button onClick={stopShareScreen} >stop sharing</button>
+        <button onClick={leaveChannel} >Leave</button>
+        <button onClick={() => emitEvent ? emitEvent(Events.EMMIT_BREAKOUT_ROOMS) : null} >Breakout</button>
       </ActionButtonsContainerLayout1>
     </ContainerLayout1>
   )

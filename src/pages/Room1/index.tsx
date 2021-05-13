@@ -35,7 +35,7 @@ const InteractiveLiveStreamingHost = () => {
       },
       body: JSON.stringify({
         role: RoleTypes.HOST,
-        channel: 'pmvs-channel'
+        channel: 'room-1'
       })
     })
       .then(response => response.json())

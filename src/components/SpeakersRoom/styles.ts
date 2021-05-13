@@ -22,6 +22,23 @@ export const StreamBoxContainerLayout1 = styled.div`
   position: relative;
 `
 
+export const ChannelNameContainer = styled.div`
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 200px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #fff;
+`
+
+export const ChannelName = styled.p`
+  font-size: 20px;
+  font-weight: bold;
+`
+
 export const ActionButtonsContainerLayout1 = styled.div`
   width: 100%;
   height: 10%;

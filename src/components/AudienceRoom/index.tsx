@@ -9,11 +9,14 @@ import {
   ContainerLayout1,
   StreamBoxContainerLayout1,
   ActionButtonsContainerLayout1,
+  ChannelNameContainer,
+  ChannelName
 } from './styles'
 
 const AudienceRoom = () => {
 
   const {
+    channel,
     localStream,
     remoteStreams,
   } = useContext(AgoraLiveStreamingContext)
@@ -38,6 +41,9 @@ const AudienceRoom = () => {
   return (
     <ContainerLayout1>
       <StreamBoxContainerLayout1>
+        <ChannelNameContainer>
+          <ChannelName>{ channel }</ChannelName>
+        </ChannelNameContainer>
         {
           remoteStreams?.map((remoteStream : RemoteStreamInterface) => handleRemoteStream(remoteStream))
         }

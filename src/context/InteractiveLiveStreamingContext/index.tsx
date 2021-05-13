@@ -1,5 +1,5 @@
 import { createContext, Context } from 'react'
-import useAgoraLiveStreaming from '../../Hooks/AgoraLiveStreamingHook/useAgoraLiveStreaming'
+import useAgoraLiveStreaming from '../../Hooks/AgoraLiveStreamingHook'
 
 import {
   LiveStreamingContext,
@@ -17,18 +17,23 @@ export const AgoraLiveStreamingProvider: AgoraLiveStreamingProviderInterface = (
     audio,
     video,
     remoteStreams,
+    channel,
+    role,
     setAudio,
     setVideo,
     toggleAudio,
     toggleVideo,
     shareScreen,
-    stopShareScreen
+    stopShareScreen,
+    leaveChannel
   } = useAgoraLiveStreaming({
     appId: props.appId,
     channel: props.channel,
     clientToken: props.clientToken,
     role: props.role,
-    user: props.user
+    user: props.user,
+    screenToken: props.screenToken,
+    screen: props.screen
   })
 
   return (
@@ -39,12 +44,15 @@ export const AgoraLiveStreamingProvider: AgoraLiveStreamingProviderInterface = (
         audio,
         video,
         remoteStreams,
+        channel,
+        role,
         setAudio,
         setVideo,
         toggleAudio,
         toggleVideo,
         shareScreen,
-        stopShareScreen
+        stopShareScreen,
+        leaveChannel
       }}
     >
       { props.children }

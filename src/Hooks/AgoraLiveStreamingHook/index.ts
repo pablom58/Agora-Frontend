@@ -18,7 +18,8 @@ import {
   RemoteStreamInterface,
   ToggleMediaDeviceInterface,
   ShareScreenInterface,
-  StopShareScreenInterface
+  StopShareScreenInterface,
+  LeaveChannelInterface
 } from './types'
 
 const CLIENT_CONFIG : AgoraRTC.ClientConfig = {
@@ -79,7 +80,7 @@ const useAgoraLiveStreaming = (Args: ArgsType) => {
   const screen : AgoraRTC.Client = useMemo(() => AgoraRTC.createClient(CLIENT_CONFIG),[])
 
   //user screen id built from the user information, this will be use as id of the client stream
-  const screenId : number = useMemo(() => Args.user.id || 0, [Args.user.id])
+  const screenId : number = useMemo(() => Args.screen.id || 0, [Args.screen.id])
 
   //local stream of the user
   const [ localStream , setLocalStream ] = useState<LocalStream>({
@@ -146,7 +147,7 @@ const useAgoraLiveStreaming = (Args: ArgsType) => {
   //share screen
   const shareScreen : ShareScreenInterface = useCallback(() => {
     screen.init(Args.appId, () => {
-      screen.join(Args.clientToken,Args.channel,screenId,undefined,(uid : number) => {
+      screen.join(Args.screenToken,Args.channel,screenId,undefined,(uid : number) => {
         const stream : AgoraRTC.Stream = AgoraRTC.createStream({
           streamID: uid,
           audio: false,
@@ -167,7 +168,7 @@ const useAgoraLiveStreaming = (Args: ArgsType) => {
     screen,
     setScreenStream,
     Args.appId,
-    Args.clientToken,
+    Args.screenToken,
     Args.channel,
     handleError,
     screenId
@@ -192,6 +193,45 @@ const useAgoraLiveStreaming = (Args: ArgsType) => {
       }
     })
   },[screen, screenStream])
+
+  const leaveChannel : LeaveChannelInterface = useCallback(() => {
+    client.leave(() => {
+
+        //if the user is sharing screen, stop sharing
+        if(screenStream.stream){
+          screen.leave(() => {
+            if(screenStream.stream){
+              screenStream.stream.stop()
+              screen.unpublish(screenStream!.stream!)
+              screenStream.stream.close()
+
+              let container = document.getElementById(`${screenStream!.id}_container`)
+
+              if(container)
+                  container.remove()
+            }
+          })
+        }
+
+        if (localStream.stream) {
+          localStream.stream.stop()
+          client.unpublish(localStream.stream)
+          localStream.stream.close()
+
+          let container = document.getElementById(`${localStream!.id}_container`)
+          
+          if(container)
+              container.remove()
+
+          remoteStreamsClousure.empty()
+        }
+    })
+}, [
+  client,
+  screen,
+  localStream,
+  screenStream,
+])
 
   //setting client role
   useEffect(() => {
@@ -266,10 +306,12 @@ const useAgoraLiveStreaming = (Args: ArgsType) => {
         let remoteStream : AgoraRTC.Stream = event.stream
         let remoteId : string | number = remoteStream.getId()
         
-        remoteStreamsClousure.addRemoteStream({
+        if(!remoteStreamsClousure.find(remoteId)){
+          remoteStreamsClousure.addRemoteStream({
             id: remoteId,
             stream: remoteStream
-        })
+          })
+        }
 
         setRemoteStreams([...remoteStreamsClousure.value()])
     })
@@ -303,12 +345,15 @@ const useAgoraLiveStreaming = (Args: ArgsType) => {
     audio,
     video,
     remoteStreams,
+    channel: Args.channel,
+    role: Args.role,
     setAudio,
     setVideo,
     toggleAudio,
     toggleVideo,
     shareScreen,
-    stopShareScreen
+    stopShareScreen,
+    leaveChannel
   }
 }
 
